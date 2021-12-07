@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aplication.techforest.R
 import com.aplication.techforest.model.LoginState
-import com.aplication.techforest.model.UserResponse
+import com.aplication.techforest.model.User.UserResponse
 import com.aplication.techforest.repository.DeviceRepository
 import com.aplication.techforest.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -82,24 +82,24 @@ class LoginViewModel @Inject constructor(
     fun login(email: String, password: String) {
         viewModelScope.launch {
             state.value = state.value.copy(displayProgressBar = true)
-            when (val result = repository.getUser(usuario = email)) {
+            when (val result = repository.getUser(correo = email)) {
                 is Resource.Success -> {
 
                     val errorMessage = if (email.isBlank() || password.isBlank()) {
                         R.string.error_input_empty
 
-                    } else if (result.data?.size != 0) {
-                        val userEntries = result.data?.get(0)
+                    } else if (result.data != null) {
+                        val userEntries = result.data
 
                         Log.d(
                             "TAG",
-                            "${userEntries?.usuario}, ${userEntries?.clave}, validar = ${email}, ${password}"
+                            "${userEntries.correo}, ${userEntries.contraseña}, validar = ${email}, ${password}"
                         )
 
-                        if (email != userEntries?.usuario || password != userEntries.clave) {
+                        if (email != userEntries.correo || password != userEntries.contraseña) {
                             R.string.error_invalid_credentials
 
-                        } else if (email == userEntries.usuario || password == userEntries.clave) {
+                        } else if (email == userEntries.correo || password == userEntries.contraseña) {
                             delay(3000)
                             Log.d("Id userLoginViewModel", "${userEntries.id}")
                             state.value = state.value.copy(userId = userEntries.id)
@@ -131,7 +131,7 @@ class LoginViewModel @Inject constructor(
                 else -> {
                     Log.d(
                         "Else",
-                        "${result.data?.get(0)?.usuario}, ${result.data?.get(0)?.clave}, validar = ${email}, ${password}"
+                        "${result.data?.correo}, ${result.data?.contraseña}, validar = ${email}, ${password}"
                     )
                 }
             }

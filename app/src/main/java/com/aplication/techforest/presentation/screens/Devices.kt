@@ -3,7 +3,6 @@ package com.aplication.techforest.presentation.screens
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -11,8 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -25,9 +22,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.annotation.ExperimentalCoilApi
 import com.aplication.techforest.R
-import com.aplication.techforest.model.DeviceResponse
-import com.aplication.techforest.presentation.components.RetrySection
+import com.aplication.techforest.model.Device.DeviceResponse
 import com.aplication.techforest.ui.theme.*
+import com.aplication.techforest.utils.Resource
 import com.aplication.techforest.viewmodel.DeviceViewModel
 
 
@@ -36,17 +33,18 @@ import com.aplication.techforest.viewmodel.DeviceViewModel
 @ExperimentalMaterialApi
 @Composable
 fun Devices(
-    viewModel: DeviceViewModel = hiltViewModel()
+    viewModel: DeviceViewModel = hiltViewModel(),
+    userId : Int
 ) {
 
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val scaffoldState = rememberScaffoldState()
-    val deviceList by remember { viewModel.deviceList }
-    val endReached by remember { viewModel.endReached }
-    val loadError by remember { viewModel.loadError }
-    val isLoading by remember { viewModel.isLoading }
-
+    val deviceData = produceState<Resource<DeviceResponse>>(
+        initialValue = Resource.Loading()
+    ){
+        value = viewModel.getDevicesData(userId = userId)
+    }.value
 
     Surface(
         color = MaterialTheme.colors.background,
@@ -63,24 +61,7 @@ fun Devices(
             ) {
                 Column {
                     Title()
-                    LazyColumn(contentPadding = PaddingValues(16.dp)){
-                        items(deviceList.size){
-                            DeviceListItem(device = deviceList[it])
-                        }
-                    }
-                    Box(
-                        contentAlignment = Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        if(isLoading) {
-                            CircularProgressIndicator(color = MaterialTheme.colors.primary)
-                        }
-                        if(loadError.isNotEmpty()) {
-                            RetrySection(error = loadError) {
-                                viewModel.loadDevices()
-                            }
-                        }
-                    }
+                    DeviceDetailStateWrapper(deviceInfo = deviceData)
                 }
             }
         }
@@ -153,12 +134,8 @@ fun Title(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Good morning, $name",
+                text = name,
                 style = MaterialTheme.typography.h2
-            )
-            Text(
-                text = "We wish you have a good day!",
-                style = MaterialTheme.typography.body1
             )
         }
     }
@@ -205,6 +182,34 @@ fun DeviceListItem2(device: DeviceResponse) {
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Normal,
                 fontFamily = FontFamily.SansSerif
+            )
+        }
+    }
+}
+
+@Composable
+fun DeviceDetailStateWrapper(
+    deviceInfo: Resource<DeviceResponse>,
+    modifier: Modifier = Modifier,
+    loadingModifier: Modifier = Modifier
+) {
+    when(deviceInfo) {
+        is Resource.Success -> {
+            DeviceListItem(
+                device = deviceInfo.data!!
+            )
+        }
+        is Resource.Error -> {
+            Text(
+                text = deviceInfo.message!!,
+                color = Color.Red,
+                modifier = modifier
+            )
+        }
+        is Resource.Loading -> {
+            CircularProgressIndicator(
+                color = MaterialTheme.colors.primary,
+                modifier = loadingModifier
             )
         }
     }

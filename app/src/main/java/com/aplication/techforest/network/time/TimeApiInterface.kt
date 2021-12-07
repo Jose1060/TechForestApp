@@ -1,7 +1,6 @@
 package com.aplication.techforest.network.time
 
 import com.aplication.techforest.model.TimeResponse
-import com.aplication.techforest.model.UserResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 import javax.inject.Singleton

@@ -13,11 +13,7 @@ import coil.annotation.ExperimentalCoilApi
 import com.aplication.techforest.navigation.Destinations.*
 
 import com.aplication.techforest.presentation.login.LoginScreen
-import com.aplication.techforest.presentation.screens.Devices
-import com.aplication.techforest.presentation.screens.Plants
-import com.aplication.techforest.presentation.screens.Profiles
-import com.aplication.techforest.presentation.screens.Settings
-import com.aplication.techforest.presentation.screens.HomeScreen
+import com.aplication.techforest.presentation.screens.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
@@ -29,35 +25,45 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 @Composable
 fun NavigationHost(
     navController: NavHostController,
-    userId : Int
+    userId: Int
 ) {
     Log.d("NavController", "$userId")
 
-    NavHost(navController = navController, startDestination = HomeScreen.route){
+    NavHost(navController = navController, startDestination = Advertisements.route) {
         composable(
             route = HomeScreen.route,
             arguments = HomeScreen.arguments
-        ){ navBackStackEntry ->
+        ) { navBackStackEntry ->
             val userId = navBackStackEntry.arguments?.getInt("userId")
             requireNotNull(userId)
             Log.d("NavHomeScreen", "$userId")
             HomeScreen(userId = userId)
         }
 
-        composable(Devices.route){
-            Devices()
+        composable(
+            route = Devices.route,
+            arguments = Devices.arguments
+        ) { navBackStackEntry ->
+            val userId = navBackStackEntry.arguments?.getInt("userId")
+            requireNotNull(userId)
+            Log.d("NavHomeScreen", "$userId")
+            Devices(userId =userId)
         }
 
-        composable(Plants.route){
+        composable(Plants.route) {
             Plants()
         }
 
-        composable(Profile.route){
+        composable(Profile.route) {
             Profiles()
         }
 
-        composable(Settings.route){
+        composable(Settings.route) {
             Settings()
+        }
+
+        composable(Advertisements.route){
+            AdvertisementsScreen()
         }
 
     }

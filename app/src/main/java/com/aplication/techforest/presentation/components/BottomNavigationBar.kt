@@ -72,6 +72,7 @@ fun BottomNavigationBar2(
     itemPlants: Destinations.Plants = Destinations.Plants,
     itemProfile: Destinations.Profile = Destinations.Profile,
     itemSettings: Destinations.Settings = Destinations.Settings,
+    itemAdvertisement: Destinations.Advertisements = Destinations.Advertisements,
 
     userId: Int,
 ) {
@@ -86,13 +87,36 @@ fun BottomNavigationBar2(
         BottomNavigationItem(
             icon = {
                 Icon(
+                    painter = painterResource(id = itemAdvertisement.iconId),
+                    contentDescription = itemAdvertisement.title,
+                    modifier = Modifier.size(20.dp),
+                )
+            },
+            label = { Text(text = itemAdvertisement.title) },
+            selected = currentRoute == itemAdvertisement.route,
+            onClick = {
+                navController.navigate(itemAdvertisement.route) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+
+                    launchSingleTop = true
+                }
+            },
+            selectedContentColor = Turquoise,
+            alwaysShowLabel = false
+        )
+
+        BottomNavigationItem(
+            icon = {
+                Icon(
                     painter = painterResource(id = itemHome.iconId),
                     contentDescription = itemHome.title,
                     modifier = Modifier.size(20.dp),
                 )
             },
             label = { Text(text = itemHome.title) },
-            selected = currentRoute == itemHome.createRoute(userId = userId),
+            selected = currentRoute == itemHome.route,
             onClick = {
                 navController.navigate(itemHome.createRoute(userId = userId)) {
                     popUpTo(navController.graph.findStartDestination().id) {
@@ -117,7 +141,7 @@ fun BottomNavigationBar2(
             label = { Text(text = itemDevices.title) },
             selected = currentRoute == itemDevices.route,
             onClick = {
-                navController.navigate(itemDevices.route) {
+                navController.navigate(itemDevices.createRoute(userId = userId)) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
@@ -174,30 +198,6 @@ fun BottomNavigationBar2(
             selectedContentColor = Turquoise,
             alwaysShowLabel = false
         )
-
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    painter = painterResource(id = itemSettings.iconId),
-                    contentDescription = itemSettings.title,
-                    modifier = Modifier.size(20.dp),
-                )
-            },
-            label = { Text(text = itemSettings.title) },
-            selected = currentRoute == itemSettings.route,
-            onClick = {
-                navController.navigate(itemSettings.route) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-
-                    launchSingleTop = true
-                }
-            },
-            selectedContentColor = Turquoise,
-            alwaysShowLabel = false
-        )
-
     }
 }
 

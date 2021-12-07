@@ -17,6 +17,8 @@ sealed class Destinations(
     @DrawableRes val iconId: Int,
     val arguments: List<NamedNavArgument>
 ) {
+    object Advertisements : Destinations("advertisement", "Adds", R.drawable.ic_baseline_advertisements, emptyList())
+
     object Login : Destinations("login", "Login", R.drawable.ic_baseline_circle_24, emptyList())
 
     object MainScreen : Destinations("main", "Main", R.drawable.ic_baseline_circle_24,
@@ -34,7 +36,13 @@ sealed class Destinations(
         fun createRoute(userId: Int) = "homeScreen/$userId"
     }
 
-    object Devices : Destinations("devices", "Devices", R.drawable.ic_lambda, emptyList())
+    object Devices : Destinations(
+        "devices/{userId}", "Devices", R.drawable.ic_lambda,
+        listOf(navArgument("userId") {type = NavType.IntType})
+    ){
+        fun createRoute(userId: Int) = "Devices/$userId"
+    }
+
     object Plants :
         Destinations("plants", "Plants", R.drawable.ic_baseline_local_florist_24, emptyList())
 

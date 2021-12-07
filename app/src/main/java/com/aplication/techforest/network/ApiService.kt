@@ -34,7 +34,7 @@ class ApiService {
             .build()
 
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.101:3000/")
+            .baseUrl("https://techforestapi.herokuapp.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

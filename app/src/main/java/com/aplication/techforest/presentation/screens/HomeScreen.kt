@@ -28,12 +28,13 @@ import coil.annotation.ExperimentalCoilApi
 import com.aplication.techforest.BottomMenuContent
 import com.aplication.techforest.model.Feature
 import com.aplication.techforest.R
+import com.aplication.techforest.model.Device.DeviceResponse
 import com.aplication.techforest.presentation.components.RetrySection
 import com.aplication.techforest.standardQuadFromTo
 import com.aplication.techforest.ui.theme.*
+import com.aplication.techforest.utils.Resource
 import com.aplication.techforest.viewmodel.HomeViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-
 
 
 @ExperimentalMaterialApi
@@ -54,9 +55,13 @@ fun HomeScreen(
     val endReached by remember { viewModel.endReached }
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
-    val featureList = viewModel.featureList
 
-    Log.d("Home","HomeScreen")
+    val deviceInfo = produceState<Resource<DeviceResponse>>(initialValue = Resource.Loading()) {
+        value = viewModel.getDevicesHome(userId)
+    }.value
+
+
+    Log.d("Home", "HomeScreen")
 
     Box(
         modifier = Modifier
@@ -77,22 +82,7 @@ fun HomeScreen(
                 )
             )
             CurrentMeditation()
-            FeatureSection(
-                features = featureList
-            )
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                if(isLoading) {
-                    CircularProgressIndicator(color = MaterialTheme.colors.primary)
-                }
-                if(loadError.isNotEmpty()) {
-                    RetrySection(error = loadError) {
-                        viewModel.loadDevicesHome()
-                    }
-                }
-            }
+            HomeDeviceDetailStateWrapper(deviceInfo = deviceInfo)
         }
     }
 }
@@ -243,7 +233,7 @@ fun CurrentMeditation(
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
     val timeList = viewModel.timeList
-    if (timeList.value.size != 0){
+    if (timeList.value.size != 0) {
         val time = timeList.value[0]
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -258,14 +248,14 @@ fun CurrentMeditation(
             Box(
                 contentAlignment = Alignment.Center,
             ) {
-                if(isLoading) {
+                if (isLoading) {
                     CircularProgressIndicator(color = MaterialTheme.colors.primary)
                 }
-                if(loadError.isNotEmpty()) {
+                if (loadError.isNotEmpty()) {
                     RetrySection(error = loadError) {
                         viewModel.loadTimeHome()
                     }
-                }else{
+                } else {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_play),
                         contentDescription = "Play",
@@ -313,13 +303,12 @@ fun CurrentMeditation(
     }
 
 
-
 }
 
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
-fun FeatureSection(features: List<Feature>) {
+fun FeatureSection(feature: Feature) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = "Devices",
@@ -331,8 +320,8 @@ fun FeatureSection(features: List<Feature>) {
             contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp, bottom = 50.dp),
             modifier = Modifier.fillMaxHeight()
         ) {
-            items(features.size) {
-                FeatureItem(feature = features[it])
+            items(1) {
+                FeatureItem(feature = feature)
             }
         }
     }
@@ -419,7 +408,7 @@ fun FeatureItem(
                     tint = MediumAquamarine,
                     modifier = Modifier.align(Alignment.BottomStart)
                 )
-            } else if(feature.estado == "Desactivado"){
+            } else if (feature.estado == "Desactivado") {
                 Icon(
                     painter = painterResource(id = feature.iconId),
                     contentDescription = feature.title,
@@ -441,6 +430,49 @@ fun FeatureItem(
                     .clip(RoundedCornerShape(10.dp))
                     .background(ButtonBlue)
                     .padding(vertical = 6.dp, horizontal = 15.dp)
+            )
+        }
+    }
+}
+
+
+@ExperimentalCoilApi
+@ExperimentalFoundationApi
+@Composable
+fun HomeDeviceDetailStateWrapper(
+    deviceInfo: Resource<DeviceResponse>,
+    modifier: Modifier = Modifier,
+    loadingModifier: Modifier = Modifier
+) {
+    when (deviceInfo) {
+        is Resource.Success -> {
+
+            val device = deviceInfo.data!!
+            val feature = Feature(
+                device.nombre,
+                R.drawable.ic_baseline_circle_24,
+                BlueViolet1,
+                BlueViolet2,
+                BlueViolet3,
+                device.imagen,
+                device.estado,
+            )
+
+            FeatureSection(
+                feature = feature
+            )
+        }
+        is Resource.Error -> {
+            Text(
+                text = deviceInfo.message!!,
+                color = Color.Red,
+                modifier = modifier
+            )
+        }
+        is Resource.Loading -> {
+            CircularProgressIndicator(
+                color = MaterialTheme.colors.primary,
+                modifier = loadingModifier
             )
         }
     }
