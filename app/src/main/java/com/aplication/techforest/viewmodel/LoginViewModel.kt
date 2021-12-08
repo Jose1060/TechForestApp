@@ -69,7 +69,7 @@ class LoginViewModel @Inject constructor(
     fun login(email: String, password: String) {
         viewModelScope.launch {
             state.value = state.value.copy(displayProgressBar = true)
-            when (val result = repository.getUser(correo = email)) {
+            when (val result = repository.getUserMail(correo = email)) {
                 is Resource.Success -> {
                     val errorMessage = if (email.isBlank() || password.isBlank()) {
                         R.string.error_input_empty

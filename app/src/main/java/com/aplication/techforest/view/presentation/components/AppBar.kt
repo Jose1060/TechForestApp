@@ -1,4 +1,4 @@
-package com.aplication.techforest.presentation.components
+package com.aplication.techforest.view.presentation.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

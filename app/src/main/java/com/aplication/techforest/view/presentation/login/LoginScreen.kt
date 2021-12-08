@@ -1,4 +1,4 @@
-package com.aplication.techforest.presentation.login
+package com.aplication.techforest.view.presentation.login
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.annotation.ExperimentalCoilApi
 import com.aplication.techforest.model.LoginState
-import com.aplication.techforest.presentation.components.EventDialog
-import com.aplication.techforest.presentation.components.RoundedButton
-import com.aplication.techforest.presentation.components.TransparentTextField
+import com.aplication.techforest.view.presentation.components.EventDialog
+import com.aplication.techforest.view.presentation.components.RoundedButton
+import com.aplication.techforest.view.presentation.components.TransparentTextField
 
 
 @ExperimentalCoilApi

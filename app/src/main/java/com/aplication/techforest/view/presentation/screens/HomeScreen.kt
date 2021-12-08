@@ -1,7 +1,6 @@
-package com.aplication.techforest.presentation.screens
+package com.aplication.techforest.view.presentation.screens
 
 import android.util.Log
-import android.util.Log.WARN
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -25,11 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.annotation.ExperimentalCoilApi
-import com.aplication.techforest.BottomMenuContent
+import com.aplication.techforest.view.presentation.components.BottomMenuContent
 import com.aplication.techforest.model.Feature
 import com.aplication.techforest.R
 import com.aplication.techforest.model.Device.DeviceResponse
-import com.aplication.techforest.presentation.components.RetrySection
+import com.aplication.techforest.model.User.UserResponse
+import com.aplication.techforest.view.presentation.components.RetrySection
 import com.aplication.techforest.standardQuadFromTo
 import com.aplication.techforest.ui.theme.*
 import com.aplication.techforest.utils.Resource
@@ -59,6 +59,9 @@ fun HomeScreen(
     val deviceInfo = produceState<Resource<DeviceResponse>>(initialValue = Resource.Loading()) {
         value = viewModel.getDevicesHome(userId)
     }.value
+    val userInfo = produceState<Resource<UserResponse>>(initialValue = Resource.Loading()) {
+        value = viewModel.getUserHome(userId)
+    }.value
 
 
     Log.d("Home", "HomeScreen")
@@ -69,7 +72,7 @@ fun HomeScreen(
             .fillMaxSize()
     ) {
         Column {
-            GreetingSection(user = userId)
+            UserInfoStateWrapper(userInfo = userInfo)
             ChipSection(
                 chips = listOf(
                     "Plants",
@@ -159,8 +162,8 @@ fun BottomMenuItem(
 }
 
 @Composable
-fun GreetingSection(
-    user: Int
+fun WelcomeSection(
+    user: UserResponse
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -173,7 +176,7 @@ fun GreetingSection(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Good morning, $user",
+                text = "Bienvenido, ${user.nombres}",
                 style = MaterialTheme.typography.h2
             )
             Text(
@@ -301,8 +304,6 @@ fun CurrentMeditation(
             viewModel.loadTimeHome()
         }
     }
-
-
 }
 
 @ExperimentalCoilApi
@@ -416,7 +417,6 @@ fun FeatureItem(
                     modifier = Modifier.align(Alignment.BottomStart)
                 )
             }
-
             Text(
                 text = "Start",
                 color = TextWhite,
@@ -470,10 +470,56 @@ fun HomeDeviceDetailStateWrapper(
             )
         }
         is Resource.Loading -> {
-            CircularProgressIndicator(
-                color = MaterialTheme.colors.primary,
-                modifier = loadingModifier
+            Box() {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colors.primary,
+                        modifier = loadingModifier
+                    )
+                }
+            }
+        }
+    }
+}
+
+@ExperimentalCoilApi
+@ExperimentalMaterialApi
+@Composable
+fun UserInfoStateWrapper(
+    userInfo: Resource<UserResponse>,
+    modifier: Modifier = Modifier,
+    loadingModifier: Modifier = Modifier,
+) {
+    when (userInfo) {
+        is Resource.Success -> {
+            WelcomeSection(user = userInfo.data!!)
+        }
+        is Resource.Error -> {
+            Text(
+                text = userInfo.message!!,
+                color = Color.Red,
+                modifier = modifier
             )
+        }
+        is Resource.Loading -> {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colors.primary,
+                        modifier = loadingModifier
+                    )
+                }
+            }
         }
     }
 }

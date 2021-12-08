@@ -1,4 +1,4 @@
-package com.aplication.techforest.presentation.screens
+package com.aplication.techforest.view.presentation.screens
 
 import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -8,9 +8,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
-import com.aplication.techforest.navigation.AnimatedNavigationHost
 import com.aplication.techforest.navigation.NavigationHost
-import com.aplication.techforest.presentation.components.BottomNavigationBar2
+import com.aplication.techforest.view.presentation.components.BottomNavigationBar2
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 @ExperimentalAnimationApi

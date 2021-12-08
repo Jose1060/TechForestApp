@@ -1,4 +1,4 @@
-package com.aplication.techforest.presentation.screens
+package com.aplication.techforest.view.presentation.screens
 
 import android.Manifest
 import androidx.compose.runtime.Composable
@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.rememberPermissionState
-import java.io.File
 
 @ExperimentalPermissionsApi
 @Composable

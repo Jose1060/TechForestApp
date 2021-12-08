@@ -50,6 +50,12 @@ sealed class Destinations(
     object Settings :
         Destinations("settings", "Settings", R.drawable.ic_baseline_settings_24, emptyList())
 
+    object DeviceDetail : Destinations("deviceDetail/{deviceId}", "Detail Device", R.drawable.ic_baseline_circle_24,
+        listOf(navArgument("deviceId"){type = NavType.IntType})
+    ){
+        fun createRoute(deviceId: Int) = "deviceDetail/$deviceId"
+    }
+
 
 }
 

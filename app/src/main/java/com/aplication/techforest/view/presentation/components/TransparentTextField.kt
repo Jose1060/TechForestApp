@@ -1,4 +1,4 @@
-package com.aplication.techforest.presentation.components
+package com.aplication.techforest.view.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions

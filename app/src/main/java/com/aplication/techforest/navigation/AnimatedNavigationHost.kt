@@ -14,9 +14,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
-import com.aplication.techforest.presentation.login.LoginScreen
-import com.aplication.techforest.presentation.screens.HomeScreen
-import com.aplication.techforest.presentation.screens.MainScreen
+import com.aplication.techforest.view.presentation.login.LoginScreen
+import com.aplication.techforest.view.presentation.screens.HomeScreen
+import com.aplication.techforest.view.presentation.screens.MainScreen
 import com.aplication.techforest.viewmodel.LoginViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable

@@ -1,4 +1,4 @@
-package com.aplication.techforest.presentation.screens
+package com.aplication.techforest.view.presentation.screens
 
 import androidx.compose.runtime.Composable
 import android.annotation.SuppressLint

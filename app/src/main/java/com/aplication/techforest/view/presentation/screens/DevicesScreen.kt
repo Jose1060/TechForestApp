@@ -1,7 +1,9 @@
-package com.aplication.techforest.presentation.screens
+package com.aplication.techforest.view.presentation.screens
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,9 +22,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.aplication.techforest.R
 import com.aplication.techforest.model.Device.DeviceResponse
+import com.aplication.techforest.navigation.Destinations
 import com.aplication.techforest.ui.theme.*
 import com.aplication.techforest.utils.Resource
 import com.aplication.techforest.viewmodel.DeviceViewModel
@@ -34,7 +40,8 @@ import com.aplication.techforest.viewmodel.DeviceViewModel
 @Composable
 fun Devices(
     viewModel: DeviceViewModel = hiltViewModel(),
-    userId : Int
+    userId: Int,
+    navController: NavController,
 ) {
 
     val scope = rememberCoroutineScope()
@@ -42,7 +49,7 @@ fun Devices(
     val scaffoldState = rememberScaffoldState()
     val deviceData = produceState<Resource<DeviceResponse>>(
         initialValue = Resource.Loading()
-    ){
+    ) {
         value = viewModel.getDevicesData(userId = userId)
     }.value
 
@@ -61,7 +68,7 @@ fun Devices(
             ) {
                 Column {
                     Title()
-                    DeviceDetailStateWrapper(deviceInfo = deviceData)
+                    DeviceDetailStateWrapper(deviceInfo = deviceData, navController)
                 }
             }
         }
@@ -72,7 +79,8 @@ fun Devices(
 @Composable
 fun DeviceListItem(
     color: Color = BlueViolet3,
-    device: DeviceResponse
+    device: DeviceResponse,
+    navController: NavController
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -112,7 +120,12 @@ fun DeviceListItem(
                 painter = painterResource(id = R.drawable.ic_play),
                 contentDescription = "Play",
                 tint = Color.White,
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier
+                    .size(16.dp)
+                    .clickable {
+                        Log.d("DeviceID_DS", "${device.id}")
+                        navController.navigate(Destinations.DeviceDetail.createRoute(deviceId = device.id))
+                    }
             )
         }
     }
@@ -190,13 +203,15 @@ fun DeviceListItem2(device: DeviceResponse) {
 @Composable
 fun DeviceDetailStateWrapper(
     deviceInfo: Resource<DeviceResponse>,
+    navController: NavController,
     modifier: Modifier = Modifier,
     loadingModifier: Modifier = Modifier
 ) {
-    when(deviceInfo) {
+    when (deviceInfo) {
         is Resource.Success -> {
             DeviceListItem(
-                device = deviceInfo.data!!
+                device = deviceInfo.data!!,
+                navController = navController
             )
         }
         is Resource.Error -> {
@@ -207,10 +222,19 @@ fun DeviceDetailStateWrapper(
             )
         }
         is Resource.Loading -> {
-            CircularProgressIndicator(
-                color = MaterialTheme.colors.primary,
-                modifier = loadingModifier
-            )
+            Box() {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colors.primary,
+                        modifier = loadingModifier
+                    )
+                }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.aplication.techforest
+package com.aplication.techforest.view.presentation.components
 
 import androidx.annotation.DrawableRes
 

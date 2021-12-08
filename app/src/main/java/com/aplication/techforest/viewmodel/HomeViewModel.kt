@@ -8,6 +8,7 @@ import com.aplication.techforest.R
 import com.aplication.techforest.model.Device.DeviceResponse
 import com.aplication.techforest.model.Feature
 import com.aplication.techforest.model.TimeResponse
+import com.aplication.techforest.model.User.UserResponse
 import com.aplication.techforest.repository.DeviceRepository
 import com.aplication.techforest.repository.TimeRepository
 import com.aplication.techforest.ui.theme.BlueViolet1
@@ -38,9 +39,15 @@ class HomeViewModel @Inject constructor(
     suspend fun getDevicesHome(
         userId: Int
     ): Resource<DeviceResponse> {
-
         return repositoryDev.getDeviceUser(userId)
     }
+
+    suspend fun getUserHome(
+        userId: Int
+    ): Resource<UserResponse>{
+        return repositoryDev.getUser(userId = userId)
+    }
+
 
     fun loadTimeHome() {
         viewModelScope.launch {

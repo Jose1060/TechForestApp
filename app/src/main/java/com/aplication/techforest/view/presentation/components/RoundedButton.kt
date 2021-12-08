@@ -1,4 +1,4 @@
-package com.aplication.techforest.presentation.components
+package com.aplication.techforest.view.presentation.components
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size

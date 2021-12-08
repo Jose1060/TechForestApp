@@ -1,8 +1,5 @@
-package com.aplication.techforest.presentation.components
+package com.aplication.techforest.view.presentation.components
 
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -11,15 +8,12 @@ import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.ColorFilter.Companion.tint
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.aplication.techforest.R
 import com.aplication.techforest.navigation.Destinations
 import com.aplication.techforest.ui.theme.*
 
@@ -191,7 +185,6 @@ fun BottomNavigationBar2(
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
-
                     launchSingleTop = true
                 }
             },

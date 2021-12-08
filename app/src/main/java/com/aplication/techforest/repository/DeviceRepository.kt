@@ -22,9 +22,18 @@ class DeviceRepository @Inject constructor(
         return Resource.Success(response)
     }
 
-    suspend fun getUser(correo: String): Resource<UserResponse> {
+    suspend fun getUserMail(correo: String): Resource<UserResponse> {
         val response = try {
             apiInterface.getUserMail(correo)
+        } catch (e: Exception) {
+            return Resource.Error("An unknown error occurred: ${e.localizedMessage}")
+        }
+        return Resource.Success(response)
+    }
+
+    suspend fun getUser(userId: Int): Resource<UserResponse> {
+        val response = try {
+            apiInterface.getUser(userId)
         } catch (e: Exception) {
             return Resource.Error("An unknown error occurred: ${e.localizedMessage}")
         }
@@ -57,4 +66,56 @@ class DeviceRepository @Inject constructor(
         }
         return Resource.Success(response)
     }
+
+    suspend fun updateOptionsDevice(
+        id: Int,
+        options: OptionDeviceResponse
+    ): Resource<OptionDeviceResponse> {
+        val response = try {
+            apiInterface.updateOptions(id = id, optionDeviceResponse = options)
+        } catch (e: Exception) {
+            return Resource.Error("An unknown error occurred: ${e.localizedMessage}")
+        }
+        return Resource.Success(response)
+    }
+
+    suspend fun updateValvesDevice(
+        id: Int,
+        valveDeviceResponse: ValveDeviceResponse
+    ): Resource<ValveDeviceResponse> {
+        val response = try {
+            apiInterface.updateValve(id = id, valveDeviceResponse = valveDeviceResponse)
+        } catch (e: Exception) {
+            return Resource.Error("An unknown error occurred: {$e.localizedMessage}")
+        }
+        return Resource.Success(response)
+    }
+
+    suspend fun updateDevice(
+        id: Int,
+        deviceResponse: DeviceResponse
+    ): Resource<DeviceResponse> {
+        val response = try {
+            apiInterface.updateDevice(id = id, deviceResponse = deviceResponse)
+        } catch (e: Exception) {
+            return Resource.Error("An unknown error occurred: ${e.localizedMessage}")
+        }
+        return Resource.Success(response)
+    }
+
+    suspend fun updateUser(
+        id: Int,
+        userResponse: UserResponse
+    ): Resource<UserResponse> {
+        val response = try {
+            apiInterface.updateUser(id = id, userResponse = userResponse)
+        } catch (e: Exception) {
+            return Resource.Error("An unknown error occurred: ${e.localizedMessage}")
+        }
+        return Resource.Success(response)
+    }
 }
+
+
+
+

@@ -4,8 +4,8 @@ import com.aplication.techforest.model.Device.DeviceResponse
 import com.aplication.techforest.model.Device.OptionDeviceResponse
 import com.aplication.techforest.model.Device.ValveDeviceResponse
 import com.aplication.techforest.model.User.UserResponse
-import retrofit2.http.GET
-import retrofit2.http.Path
+import okhttp3.RequestBody
+import retrofit2.http.*
 import javax.inject.Singleton
 
 @Singleton
@@ -33,6 +33,25 @@ interface ApiInterface {
 
     @GET("dispositivos/{id}")
     suspend fun getDeviceData(@Path("id") id : Int) : DeviceResponse
+
+    @GET("usuario/{id}")
+    suspend fun getUser(@Path("id") id: Int) : UserResponse
+
+
+
+    //PUT AREA
+    @FormUrlEncoded
+    @PUT("opciones/dispositivo/{id}")
+    suspend fun updateOptions(@Path("id") id: Int, @Body optionDeviceResponse: OptionDeviceResponse) : OptionDeviceResponse
+
+    @PUT("valvula/dispositivo/{id}")
+    suspend fun updateValve(@Path("id") id : Int, @Body valveDeviceResponse: ValveDeviceResponse) : ValveDeviceResponse
+
+    @PUT("dispositivos/{id}")
+    suspend fun updateDevice(@Path("id") id: Int, @Body deviceResponse: DeviceResponse) : DeviceResponse
+
+    @PUT("usuario/{id}")
+    suspend fun updateUser(@Path("id") id: Int, @Body userResponse: UserResponse) : UserResponse
 
 }
 

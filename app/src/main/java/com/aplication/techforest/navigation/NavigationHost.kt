@@ -8,13 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.aplication.techforest.navigation.Destinations.*
 
-import com.aplication.techforest.presentation.login.LoginScreen
-import com.aplication.techforest.presentation.screens.*
-import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.aplication.techforest.view.presentation.screens.*
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 @ExperimentalAnimationApi
@@ -47,7 +44,7 @@ fun NavigationHost(
             val userId = navBackStackEntry.arguments?.getInt("userId")
             requireNotNull(userId)
             Log.d("NavHomeScreen", "$userId")
-            Devices(userId =userId)
+            Devices(userId = userId, navController = navController)
         }
 
         composable(Plants.route) {
@@ -62,8 +59,18 @@ fun NavigationHost(
             Settings()
         }
 
-        composable(Advertisements.route){
+        composable(Advertisements.route) {
             AdvertisementsScreen()
+        }
+
+        composable(
+            route = DeviceDetail.route,
+            arguments = DeviceDetail.arguments
+        ) { navBackStackEntry ->
+            val deviceId = navBackStackEntry.arguments?.getInt("deviceId")
+            requireNotNull(deviceId)
+            Log.d("DeviceDetailID", "$deviceId")
+            DeviceDetailScreen(deviceId = deviceId)
         }
 
     }
