@@ -70,7 +70,17 @@ fun NavigationHost(
             val deviceId = navBackStackEntry.arguments?.getInt("deviceId")
             requireNotNull(deviceId)
             Log.d("DeviceDetailID", "$deviceId")
-            DeviceDetailScreen(deviceId = deviceId)
+            DeviceDetailScreen(deviceId = deviceId, navController = navController)
+        }
+
+        composable(
+            route = OptionsDevice.route,
+            arguments = OptionsDevice.arguments
+        ){ navBackStackEntry ->
+            val optionsId = navBackStackEntry.arguments?.getInt("optionsId")
+            requireNotNull(optionsId)
+            Log.d("OptionsID", "$optionsId")
+            EditOptionsScreen(optionsId = optionsId)
         }
 
     }

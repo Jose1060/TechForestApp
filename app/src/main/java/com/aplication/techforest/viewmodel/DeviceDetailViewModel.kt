@@ -19,10 +19,10 @@ class DeviceDetailViewModel @Inject constructor(
     }
 
     suspend fun getDeviceOptions(deviceId: Int) : Resource<OptionDeviceResponse>{
-        return repository.getOptions(deviceId)
+        return repository.getOptionsDevice(deviceId)
     }
 
-    suspend fun getDeviceValvula(deviceId: Int) : Resource<ValveDeviceResponse>{
-        return repository.getValve(deviceId)
+    suspend fun getDeviceValve(deviceId: Int) : Resource<ValveDeviceResponse>{
+        return repository.getValveDevice(deviceId)
     }
 }

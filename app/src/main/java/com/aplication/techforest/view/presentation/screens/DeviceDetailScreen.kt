@@ -1,8 +1,8 @@
 package com.aplication.techforest.view.presentation.screens
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -21,17 +21,18 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.aplication.techforest.R
 import com.aplication.techforest.model.Device.DeviceResponse
 import com.aplication.techforest.model.Device.OptionDeviceResponse
+import com.aplication.techforest.navigation.Destinations
 import com.aplication.techforest.ui.theme.BabyPink
 import com.aplication.techforest.utils.Resource
 import com.aplication.techforest.viewmodel.DeviceDetailViewModel
@@ -41,13 +42,18 @@ import com.aplication.techforest.viewmodel.DeviceDetailViewModel
 @Composable
 fun DeviceDetailScreen(
     viewModel: DeviceDetailViewModel = hiltViewModel(),
-    deviceId: Int
+    deviceId: Int,
+    navController: NavHostController
 ) {
     val deviceData = produceState<Resource<DeviceResponse>>(initialValue = Resource.Loading()) {
         value = viewModel.getDeviceData(deviceId)
     }.value
 
-    DeviceDataStateWrapper(deviceData = deviceData, viewModel = viewModel)
+    DeviceDataStateWrapper(
+        deviceData = deviceData,
+        viewModel = viewModel,
+        navController = navController
+    )
 
 }
 
@@ -59,17 +65,22 @@ fun DeviceDataStateWrapper(
     deviceData: Resource<DeviceResponse>,
     modifier: Modifier = Modifier,
     loadingModifier: Modifier = Modifier,
-    viewModel: DeviceDetailViewModel
+    viewModel: DeviceDetailViewModel,
+    navController: NavHostController
 ) {
     when (deviceData) {
         is Resource.Success -> {
-            DeviceDataList(deviceData = deviceData.data!!, viewModel = viewModel)
+            DeviceDataList(
+                deviceData = deviceData.data!!,
+                viewModel = viewModel,
+                navController = navController
+            )
         }
         is Resource.Error -> {
             Text(
                 text = deviceData.message!!,
                 color = Color.Red,
-                modifier = modifier
+                modifier = modifier,
             )
         }
         is Resource.Loading -> {
@@ -97,10 +108,14 @@ fun OptionsDeviceStateWrapper(
     optionsDevice: Resource<OptionDeviceResponse>,
     modifier: Modifier = Modifier,
     loadingModifier: Modifier = Modifier,
+    navController: NavHostController,
 ) {
     when (optionsDevice) {
         is Resource.Success -> {
-            OptionsDeviceList(optionsDevice.data!!)
+            OptionsDeviceList(
+                OptionsDevice = optionsDevice.data!!,
+                navController = navController
+            )
         }
         is Resource.Error -> {
             Text(
@@ -132,7 +147,8 @@ fun OptionsDeviceStateWrapper(
 @Composable
 fun DeviceDataList(
     deviceData: DeviceResponse,
-    viewModel: DeviceDetailViewModel
+    viewModel: DeviceDetailViewModel,
+    navController: NavHostController
 ) {
     var expandedState by remember {
         mutableStateOf(false)
@@ -237,7 +253,10 @@ fun DeviceDataList(
                         value = viewModel.getDeviceOptions(deviceData.id)
                     }.value
                 Box() {
-                    OptionsDeviceStateWrapper(deviceOptions)
+                    OptionsDeviceStateWrapper(
+                        optionsDevice = deviceOptions,
+                        navController = navController
+                    )
                 }
             }
         }
@@ -246,7 +265,8 @@ fun DeviceDataList(
 
 @Composable
 fun OptionsDeviceList(
-    OptionsDevice : OptionDeviceResponse
+    OptionsDevice: OptionDeviceResponse,
+    navController: NavHostController
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -292,6 +312,22 @@ fun OptionsDeviceList(
                 fontWeight = FontWeight.Light,
                 modifier = Modifier.weight(1f)
             )
+        }
+
+        Row(horizontalArrangement = Arrangement.End) {
+            IconButton(
+                onClick = {
+                    Log.d("OptionsID", "${OptionsDevice.id}")
+                    navController.navigate(Destinations.OptionsDevice.createRoute(optionsId = OptionsDevice.id))
+                }, modifier = Modifier
+                    .size(45.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_edit_24),
+                    contentDescription = null,
+                    tint = BabyPink
+                )
+            }
         }
     }
 }

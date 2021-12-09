@@ -17,7 +17,8 @@ sealed class Destinations(
     @DrawableRes val iconId: Int,
     val arguments: List<NamedNavArgument>
 ) {
-    object Advertisements : Destinations("advertisement", "Adds", R.drawable.ic_baseline_advertisements, emptyList())
+    object Advertisements :
+        Destinations("advertisement", "Adds", R.drawable.ic_baseline_advertisements, emptyList())
 
     object Login : Destinations("login", "Login", R.drawable.ic_baseline_circle_24, emptyList())
 
@@ -38,8 +39,8 @@ sealed class Destinations(
 
     object Devices : Destinations(
         "devices/{userId}", "Devices", R.drawable.ic_lambda,
-        listOf(navArgument("userId") {type = NavType.IntType})
-    ){
+        listOf(navArgument("userId") { type = NavType.IntType })
+    ) {
         fun createRoute(userId: Int) = "Devices/$userId"
     }
 
@@ -47,16 +48,23 @@ sealed class Destinations(
         Destinations("plants", "Plants", R.drawable.ic_baseline_local_florist_24, emptyList())
 
     object Profile : Destinations("profile", "Profile", R.drawable.ic_profile, emptyList())
+
     object Settings :
         Destinations("settings", "Settings", R.drawable.ic_baseline_settings_24, emptyList())
 
-    object DeviceDetail : Destinations("deviceDetail/{deviceId}", "Detail Device", R.drawable.ic_baseline_circle_24,
-        listOf(navArgument("deviceId"){type = NavType.IntType})
-    ){
+    object DeviceDetail : Destinations(
+        "deviceDetail/{deviceId}", "Detail Device", R.drawable.ic_baseline_circle_24,
+        listOf(navArgument("deviceId") { type = NavType.IntType })
+    ) {
         fun createRoute(deviceId: Int) = "deviceDetail/$deviceId"
     }
 
-
+    object OptionsDevice : Destinations(
+        "optionsDevice/{optionsId}", "Options Device", R.drawable.ic_baseline_circle_24,
+        listOf(navArgument("optionsId") { type = NavType.IntType })
+    ) {
+        fun createRoute(optionsId: Int) = "optionsDevice/$optionsId"
+    }
 }
 
 sealed class Destinations1(
