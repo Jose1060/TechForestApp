@@ -15,10 +15,11 @@ fun AdvertisementsScreen() {
     Box(Modifier.fillMaxSize()) {
         Image(
             painter = rememberImagePainter(
-                data = "https://images.pexels.com/photos/9604597/pexels-photo-9604597.jpeg",
+                data = "https://i.pinimg.com/originals/02/7d/82/027d8214653f75a3be25a00d46a03cd5.png",
             ),
             contentDescription = null,
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
         )
     }
 }

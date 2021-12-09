@@ -47,7 +47,12 @@ sealed class Destinations(
     object Plants :
         Destinations("plants", "Plants", R.drawable.ic_baseline_local_florist_24, emptyList())
 
-    object Profile : Destinations("profile", "Profile", R.drawable.ic_profile, emptyList())
+    object Profile : Destinations(
+        "profile/{userId}", "Profile", R.drawable.ic_profile,
+        listOf(navArgument("userId") { type = NavType.IntType })
+    ) {
+        fun createRoute(userId: Int) = "profile/$userId"
+    }
 
     object Settings :
         Destinations("settings", "Settings", R.drawable.ic_baseline_settings_24, emptyList())
@@ -64,6 +69,13 @@ sealed class Destinations(
         listOf(navArgument("optionsId") { type = NavType.IntType })
     ) {
         fun createRoute(optionsId: Int) = "optionsDevice/$optionsId"
+    }
+
+    object ViewPlantCamera : Destinations(
+        "viewPlantCamera/{uri}", "Camera View", R.drawable.ic_baseline_circle_24,
+        listOf(navArgument("uri") { type = NavType.StringType })
+    ) {
+        fun createRoute(uri: String) = "viewPlantCamera/$uri"
     }
 }
 

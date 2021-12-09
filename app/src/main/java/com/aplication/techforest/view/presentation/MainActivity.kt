@@ -31,8 +31,7 @@ class MainActivity : ComponentActivity() {
             TechForestTheme {
                 val navController = rememberAnimatedNavController()
                 BoxWithConstraints {
-                    PlantsScreen()
-                    //AnimatedNavigationHost(navController)
+                    AnimatedNavigationHost(navController)
                 }
             }
         }

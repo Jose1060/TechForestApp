@@ -21,12 +21,13 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.aplication.techforest.R
+import com.aplication.techforest.model.User.UserResponse
 import com.aplication.techforest.ui.theme.DarkStateGray
 
 
 @ExperimentalCoilApi
 @Composable
-fun ProfileHeader() {
+fun ProfileHeader(user: UserResponse) {
     Surface(
         color = DarkStateGray,
         contentColor = Color.White
@@ -57,8 +58,14 @@ fun ProfileHeader() {
             Spacer(modifier = Modifier.padding(8.dp))
 
             Text(
-                text = "Tech Forest",
+                text = "${user.nombres} ${user.apellidos}",
                 style = MaterialTheme.typography.h6,
+                color = Color.White
+            )
+
+            Text(
+                text = user.correo,
+                style = MaterialTheme.typography.body2,
                 color = Color.White
             )
 
@@ -113,10 +120,3 @@ fun Plan() {
     }
 }
 
-
-@ExperimentalCoilApi
-@Preview
-@Composable
-fun PreviewProfileHeader() {
-    ProfileHeader()
-}

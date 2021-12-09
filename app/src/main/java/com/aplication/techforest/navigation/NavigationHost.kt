@@ -48,11 +48,18 @@ fun NavigationHost(
         }
 
         composable(Plants.route) {
-            PlantsScreen()
+            PlantsScreen(navController = navController)
         }
 
-        composable(Profile.route) {
-            Profiles()
+        composable(
+            route = Profile.route,
+            arguments = Profile.arguments
+        ) { navBackStackEntry ->
+            val userId = navBackStackEntry.arguments?.getInt("userId")
+            requireNotNull(userId)
+            Log.d("DeviceDetailID", "$userId")
+
+            Profiles(userId = userId)
         }
 
         composable(Settings.route) {
@@ -76,11 +83,20 @@ fun NavigationHost(
         composable(
             route = OptionsDevice.route,
             arguments = OptionsDevice.arguments
-        ){ navBackStackEntry ->
+        ) { navBackStackEntry ->
             val optionsId = navBackStackEntry.arguments?.getInt("optionsId")
             requireNotNull(optionsId)
             Log.d("OptionsID", "$optionsId")
             EditOptionsScreen(optionsId = optionsId)
+        }
+
+        composable(
+            route = ViewPlantCamera.route,
+            arguments = ViewPlantCamera.arguments
+        ) { navBackStackEntry ->
+            val uri = navBackStackEntry.arguments?.getString("uri")
+            requireNotNull(uri)
+            PlantViewCamera(uri = uri, navHostController = navController)
         }
 
     }

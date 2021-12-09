@@ -84,7 +84,7 @@ fun HomeScreen(
                     "WiFi"
                 )
             )
-            CurrentMeditation()
+            TimeSection()
             HomeDeviceDetailStateWrapper(deviceInfo = deviceInfo)
         }
     }
@@ -223,7 +223,7 @@ fun ChipSection(
 }
 
 @Composable
-fun CurrentMeditation(
+fun TimeSection(
     color: Color = LightRed,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -236,7 +236,7 @@ fun CurrentMeditation(
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
     val timeList = viewModel.timeList
-    if (timeList.value.size != 0) {
+    if (timeList.value.isNotEmpty()) {
         val time = timeList.value[0]
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -252,7 +252,16 @@ fun CurrentMeditation(
                 contentAlignment = Alignment.Center,
             ) {
                 if (isLoading) {
-                    CircularProgressIndicator(color = MaterialTheme.colors.primary)
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colors.primary,
+                            modifier = Modifier.fillMaxHeight(),
+                        )
+                    }
                 }
                 if (loadError.isNotEmpty()) {
                     RetrySection(error = loadError) {
@@ -260,43 +269,43 @@ fun CurrentMeditation(
                     }
                 } else {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_play),
-                        contentDescription = "Play",
+                        painter = painterResource(id = R.drawable.ic_cloud),
+                        contentDescription = "Time",
                         tint = Color.White,
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.fillMaxHeight()
                     )
+                    Column {
+                        Text(
+                            text = time.weather[0].main,
+                            style = MaterialTheme.typography.h2
+                        )
+                        Text(
+                            text = time.weather[0].description,
+                            style = MaterialTheme.typography.body1,
+                            color = TextWhite
+                        )
+                        Text(
+                            text = time.name,
+                            style = MaterialTheme.typography.body2,
+                            color = TextWhite
+                        )
+                    }
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(ButtonBlue)
+                            .padding(10.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_play),
+                            contentDescription = "Play",
+                            tint = Color.White,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
                 }
-            }
-            Column {
-                Text(
-                    text = time.weather[0].main,
-                    style = MaterialTheme.typography.h2
-                )
-                Text(
-                    text = time.weather[0].description,
-                    style = MaterialTheme.typography.body1,
-                    color = TextWhite
-                )
-                Text(
-                    text = time.name,
-                    style = MaterialTheme.typography.body2,
-                    color = TextWhite
-                )
-            }
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(ButtonBlue)
-                    .padding(10.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_play),
-                    contentDescription = "Play",
-                    tint = Color.White,
-                    modifier = Modifier.size(16.dp)
-                )
             }
         }
     } else {
