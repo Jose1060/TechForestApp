@@ -13,6 +13,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 import com.aplication.techforest.ui.theme.TechForestTheme
+import com.aplication.techforest.view.presentation.screens.PlantsScreen
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 
@@ -30,7 +31,8 @@ class MainActivity : ComponentActivity() {
             TechForestTheme {
                 val navController = rememberAnimatedNavController()
                 BoxWithConstraints {
-                    AnimatedNavigationHost(navController)
+                    PlantsScreen()
+                    //AnimatedNavigationHost(navController)
                 }
             }
         }

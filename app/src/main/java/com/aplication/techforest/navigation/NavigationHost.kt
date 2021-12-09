@@ -48,7 +48,7 @@ fun NavigationHost(
         }
 
         composable(Plants.route) {
-            Plants()
+            PlantsScreen()
         }
 
         composable(Profile.route) {
