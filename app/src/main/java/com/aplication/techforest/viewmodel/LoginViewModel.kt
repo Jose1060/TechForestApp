@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.aplication.techforest.R
 import com.aplication.techforest.model.LoginState
 import com.aplication.techforest.model.User.UserResponse
-import com.aplication.techforest.repository.DeviceRepository
+import com.aplication.techforest.repository.PlantRepository
 import com.aplication.techforest.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: DeviceRepository
+    private val repository: PlantRepository
 ) : ViewModel() {
 
     var userList = mutableStateOf<List<UserResponse>>(listOf())
@@ -78,11 +78,11 @@ class LoginViewModel @Inject constructor(
                         Log.d("404", "$userEntries")
                         Log.d(
                             "TAG",
-                            "${userEntries.correo}, ${userEntries.contraseña}, validar = ${email}, ${password}"
+                            "${userEntries.correo}, ${userEntries.nombres}, validar = ${email}, ${password}"
                         )
-                        if (email != userEntries.correo || password != userEntries.contraseña) {
+                        if (email != userEntries.correo || password != userEntries.nombres) {
                             R.string.error_invalid_credentials
-                        } else if (email == userEntries.correo || password == userEntries.contraseña) {
+                        } else if (email == userEntries.correo || password == userEntries.nombres) {
                             delay(3000)
                             Log.d("Id userLoginViewModel", "${userEntries.id}")
                             state.value = state.value.copy(userId = userEntries.id)

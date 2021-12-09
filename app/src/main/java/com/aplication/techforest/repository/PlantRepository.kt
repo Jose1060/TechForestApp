@@ -11,7 +11,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @ActivityScoped
-class DeviceRepository @Inject constructor(
+class PlantRepository @Inject constructor(
     private val apiInterface: ApiInterface
 ) {
     suspend fun getDevice(id: Int): Resource<DeviceResponse> {

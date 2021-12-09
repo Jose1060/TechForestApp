@@ -4,16 +4,12 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aplication.techforest.R
 import com.aplication.techforest.model.Device.DeviceResponse
 import com.aplication.techforest.model.Feature
 import com.aplication.techforest.model.TimeResponse
 import com.aplication.techforest.model.User.UserResponse
-import com.aplication.techforest.repository.DeviceRepository
+import com.aplication.techforest.repository.PlantRepository
 import com.aplication.techforest.repository.TimeRepository
-import com.aplication.techforest.ui.theme.BlueViolet1
-import com.aplication.techforest.ui.theme.BlueViolet2
-import com.aplication.techforest.ui.theme.BlueViolet3
 import com.aplication.techforest.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repositoryDev: DeviceRepository,
+    private val repositoryDev: PlantRepository,
     private val repositoryTime: TimeRepository
 ) : ViewModel() {
 

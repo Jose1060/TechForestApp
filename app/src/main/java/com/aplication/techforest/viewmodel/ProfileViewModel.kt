@@ -1,9 +1,8 @@
 package com.aplication.techforest.viewmodel
 
-import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import com.aplication.techforest.model.User.UserResponse
-import com.aplication.techforest.repository.DeviceRepository
+import com.aplication.techforest.repository.PlantRepository
 import com.aplication.techforest.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -11,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val repository: DeviceRepository
+    private val repository: PlantRepository
 ) : ViewModel(){
 
     suspend fun getUserProfile(

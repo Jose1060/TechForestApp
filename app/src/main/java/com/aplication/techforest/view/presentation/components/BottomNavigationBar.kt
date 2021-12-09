@@ -181,7 +181,7 @@ fun BottomNavigationBar2(
             label = { Text(text = itemProfile.title) },
             selected = currentRoute == itemProfile.route,
             onClick = {
-                navController.navigate(itemProfile.route) {
+                navController.navigate(itemProfile.createRoute(userId = userId)) {
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }

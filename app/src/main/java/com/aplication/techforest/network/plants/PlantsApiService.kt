@@ -1,7 +1,8 @@
 package com.aplication.techforest.network.plants
 
 import com.aplication.techforest.network.ApiInterface
-import com.aplication.techforest.repository.DeviceRepository
+import com.aplication.techforest.repository.PlantRepository
+import com.aplication.techforest.repository.PlantsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,9 +20,9 @@ import javax.inject.Singleton
 class PlantsApiService {
     @Singleton
     @Provides
-    fun provideDeviceRepository(
-        api: ApiInterface
-    ) = DeviceRepository(api)
+    fun providePlantsRepository(
+        api: PlantsApiInterface
+    ) = PlantsRepository(api)
 
     @Singleton
     @Provides

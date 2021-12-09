@@ -3,9 +3,8 @@ package com.aplication.techforest.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aplication.techforest.model.Device.OptionDeviceResponse
-import com.aplication.techforest.repository.DeviceRepository
+import com.aplication.techforest.repository.PlantRepository
 import com.aplication.techforest.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditOptionsScreenViewModel @Inject constructor(
-    private val repository: DeviceRepository
+    private val repository: PlantRepository
 ) : ViewModel() {
 
     var myResponse: MutableLiveData<Response<OptionDeviceResponse>> = MutableLiveData()
