@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 
 }
 
@@ -54,51 +55,88 @@ dependencies {
 
 
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
+    //noinspection GradleDependency
     implementation "androidx.compose.ui:ui:$compose_version"
+    //noinspection GradleDependency
     implementation "androidx.compose.material:material:$compose_version"
+    //noinspection GradleDependency
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    //noinspection GradleDependency
     implementation "androidx.compose.runtime:runtime:$compose_version"
+    //noinspection GradleDependency
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    //noinspection GradleDependency
     implementation "androidx.compose.foundation:foundation:$compose_version"
+    //noinspection GradleDependency
     implementation "androidx.compose.animation:animation:$compose_version"
+    //noinspection GradleDependency
     implementation "androidx.compose.foundation:foundation-layout:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation 'androidx.media2:media2:1.0.0-alpha04'
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    //noinspection GradleDependency
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    //noinspection GradleDependency
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
-    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
+    implementation("androidx.navigation:navigation-compose:1.0.0-beta03")
     implementation("io.coil-kt:coil-compose:1.3.2")
 
     // ViewModel
+    //noinspection GradleDependency
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
-
-    // Dagger-Hilt
-    def hilt_lifecycle_viewmodel = "1.0.0-alpha03"
     def hilt_navigation = "1.0.0-alpha03"
+    // Dagger-Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
-
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_lifecycle_viewmodel"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+    kapt "androidx.hilt:hilt-compiler:1.0.0"
     implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation"
 
 
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_lifecycle_viewmodel"
-    implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation"
 
-    implementation "com.google.dagger:hilt-android:2.28-alpha"
-    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
-    
     // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+
     // Accompanist
     implementation "com.google.accompanist:accompanist-navigation-animation:0.16.0"
+    implementation "com.google.accompanist:accompanist-permissions:0.19.0"
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.okhttp3:okhttp:4.9.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
+    implementation 'com.squareup:otto:1.3.8'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+
+
+
+    //Navigation
+    implementation "androidx.hilt:hilt-navigation-fragment:1.0.0"
+    def nav_compose = "2.4.0-alpha05"
+    //noinspection GradleDependency
+    implementation "androidx.navigation:navigation-compose:$nav_compose"
+    def compose_activity = "1.3.1"
+    implementation "androidx.activity:activity-compose:$compose_activity"
+
+    //Camera
+    def camerax_version = "1.0.2"
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    implementation "androidx.camera:camera-view:1.0.0-alpha31"
+
+
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 }
